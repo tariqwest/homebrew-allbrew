@@ -7,7 +7,7 @@ cask "mcp-router" do
   desc "A Unified MCP Server Management App (MCP Manager)."
   homepage "https://mcp-router.net"
 
-  app "MCP-Router.app"
+  app "MCP Router.app"
 
   livecheck do
     url :head
@@ -16,7 +16,7 @@ cask "mcp-router" do
 
   zap trash: [
     "~/Library/Application Support/MCP-Router",
-    "~/Library/Caches/#{name}",
-    "~/Library/Preferences/#{name}.plist",
+    "~/Library/Caches/MCP Router",
+    "~/Library/Preferences/MCP Router.plist",
   ]
 end
