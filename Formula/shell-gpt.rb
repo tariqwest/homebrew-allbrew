@@ -205,6 +205,6 @@ class ShellGpt < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/shell-gpt --version")
+    assert_match version.to_s, shell_output("#{bin}/sgpt --version")
   end
 end
