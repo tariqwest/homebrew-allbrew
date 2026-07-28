@@ -2,7 +2,7 @@ class ShellGpt < Formula
   include Language::Python::Virtualenv
 
   desc "A command-line productivity tool powered by AI large language models"
-  homepage "https://pypi.org/project/shell-gpt/"
+  homepage "https://github.com/TheR1D/shell_gpt"
   url "https://files.pythonhosted.org/packages/25/ff/053fc22663e2f5ed24e852b717ab3261bd699d00f64269abe6fb48c8edbd/shell_gpt-1.5.1-py3-none-any.whl"
   sha256 "f7bf429e289d878e8094adf9826dec1d28f3c69438a0d85446bc043e4f052b83"
   license "MIT"
@@ -13,6 +13,11 @@ class ShellGpt < Formula
   end
 
   depends_on "python@3.13"
+
+  # Native wheels (jiter, pydantic-core, …) ship dylib IDs like
+  # @rpath/foo.so. Homebrew's fix_dynamic_linkage expands those to long
+  # Cellar paths that do not fit the Mach-O header. Preserve @rpath IDs.
+  preserve_rpath
 
   resource "distro" do
     url "https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl"
@@ -29,19 +34,9 @@ class ShellGpt < Formula
     sha256 "9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494"
   end
 
-  resource "exceptiongroup" do
-    url "https://files.pythonhosted.org/packages/8a/0e/97c33bf5009bdbac74fd2beace167cab3f978feb69cc36f1ef79360d6c4e/exceptiongroup-1.3.1-py3-none-any.whl"
-    sha256 "a7a39a3bd276781e98394987d3a5701d0c4edffb633bb7a5144577f82c773598"
-  end
-
   resource "idna" do
     url "https://files.pythonhosted.org/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl"
     sha256 "7f952cbe720b688055e3f87de14f5c3e5fdaa8bc3928985c4077ca689de849a2"
-  end
-
-  resource "typing_extensions" do
-    url "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl"
-    sha256 "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
   end
 
   resource "httpx" do
@@ -59,9 +54,9 @@ class ShellGpt < Formula
     sha256 "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"
   end
 
-  resource "idna" do
-    url "https://files.pythonhosted.org/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl"
-    sha256 "7f952cbe720b688055e3f87de14f5c3e5fdaa8bc3928985c4077ca689de849a2"
+  resource "h11" do
+    url "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl"
+    sha256 "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"
   end
 
   resource "jiter" do
@@ -80,8 +75,8 @@ class ShellGpt < Formula
   end
 
   resource "pydantic-core" do
-    url "https://files.pythonhosted.org/packages/fa/87/f444a6d63bcbdff3c45291df842941ed56c568f45dd3742f25afb567b5a2/pydantic_core-2.47.0-cp313-cp313-macosx_11_0_arm64.whl"
-    sha256 "a7fdaff39a66bf66e9037da482575513d2f20bfb02ea9d9222b5cb3b902fc695"
+    url "https://files.pythonhosted.org/packages/c1/81/4fa520eaffa8bd7d1525e644cd6d39e7d60b1592bc5b516693c7340b50f1/pydantic_core-2.46.4-cp313-cp313-macosx_11_0_arm64.whl"
+    sha256 "c94f0688e7b8d0a67abf40e57a7eaaecd17cc9586706a31b76c031f63df052b4"
   end
 
   resource "typing-extensions" do
@@ -104,16 +99,6 @@ class ShellGpt < Formula
     sha256 "7f585706bfddbdebf89daac705b2dfcc16890130727d3197ca62c732b4310953"
   end
 
-  resource "colorama" do
-    url "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl"
-    sha256 "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
-  end
-
-  resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl"
-    sha256 "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
-  end
-
   resource "prompt-toolkit" do
     url "https://files.pythonhosted.org/packages/54/6f/84908cad2d6aa5144abcf7b42709fe4fdb459bc640ec7ac5786e7693dabc/prompt_toolkit-3.0.53-py3-none-any.whl"
     sha256 "01c0891d7f9237d5e339f7d3e42cdae80b7534abb1c7c0e3352efba6231492f2"
@@ -124,14 +109,9 @@ class ShellGpt < Formula
     sha256 "d63947694a0539a1d51e01eda7caf800c291020e6cdd7e28ad7b14dd33ad4f85"
   end
 
-  resource "pyreadline3" do
-    url "https://files.pythonhosted.org/packages/f7/5e/35c856e186b74678c24927847ad9895a51f1bc02a0c6126477a6c6040064/pyreadline3-3.5.6-py3-none-any.whl"
-    sha256 "8449b734232e42a5dcd74048e39b60db2839a4c38cf3ae2bf7707d58b5389c0d"
-  end
-
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/82/3b/64d4899d73f91ba49a8c18a8ff3f0ea8f1c1d75481760df8c68ef5235bf5/rich-15.0.0-py3-none-any.whl"
-    sha256 "33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb"
+    url "https://files.pythonhosted.org/packages/19/71/39c7c0d87f8d4e6c020a393182060eaefeeae6c01dab6a84ec346f2567df/rich-13.9.4-py3-none-any.whl"
+    sha256 "6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90"
   end
 
   resource "markdown-it-py" do
@@ -164,13 +144,30 @@ class ShellGpt < Formula
     sha256 "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101"
   end
 
-  resource "colorama" do
-    url "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl"
-    sha256 "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/fb/e2/79c688af8b210d232694e31e59da9f6ec747bae31c3f5946e4e9b98860d5/click-8.4.2-py3-none-any.whl"
+    sha256 "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76"
   end
 
   def install
     venv = virtualenv_create(libexec, "python3.13")
+    # Homebrew python@3.13 venvs may inherit system site-packages. Isolate so
+    # formula resources cannot resolve against /opt/homebrew/lib/python*.
+    pyvenv_cfg = libexec/"pyvenv.cfg"
+    if pyvenv_cfg.exist?
+      lines = pyvenv_cfg.read.lines
+      replaced = false
+      lines.map! do |line|
+        if line.start_with?("include-system-site-packages")
+          replaced = true
+          "include-system-site-packages = false\n"
+        else
+          line
+        end
+      end
+      lines << "include-system-site-packages = false\n" unless replaced
+      pyvenv_cfg.atomic_write(lines.join)
+    end
     resources.each { |r| pip_install_dist(venv, r) }
     pip_install_main(venv)
   end
