@@ -1,12 +1,12 @@
 class Codebuff < Formula
   desc "AI coding agent"
-  homepage "https://freebuff.com"
-  url "https://registry.npmjs.org/freebuff/-/freebuff-0.0.134.tgz"
-  sha256 "35c393576cd71eef2d09c522411becf0725e7fba034b2781b903196bc2aaf64f"
+  homepage "https://codebuff.com"
+  url "https://registry.npmjs.org/codebuff/-/codebuff-1.0.684.tgz"
+  sha256 "d408c16a629e98fb649da052c6c5f267fbc7aecb0959c381189ede75998107b3"
   license "MIT"
 
   livecheck do
-    url "https://registry.npmjs.org/freebuff/latest"
+    url "https://registry.npmjs.org/codebuff/latest"
     regex(/"version"\s*:\s*"v?([^"\\]+)"/i)
   end
 
@@ -32,12 +32,7 @@ class Codebuff < Formula
     end
   end
 
-  service do
-    run "Run"
-    keep_alive true
-  end
-
   test do
-    assert_match version.to_s, shell_output("#{bin}/freebuff --version")
+    assert_match version.to_s, shell_output("#{bin}/codebuff --version")
   end
 end
