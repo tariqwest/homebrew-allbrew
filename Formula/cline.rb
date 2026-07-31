@@ -1,8 +1,8 @@
 class Cline < Formula
   desc "Autonomous coding agent as an SDK, IDE extension, or CLI assistant."
   homepage "https://cline.bot"
-  url "https://registry.npmjs.org/cline/-/cline-3.0.46.tgz"
-  sha256 "204b57a67239be217cb26410c1c94940263ccb5402886f61bdc591aa0fc3de04"
+  url "https://registry.npmjs.org/cline/-/cline-3.0.48.tgz"
+  sha256 "bfc5f7391d9923e4121e55edf8f80d5f96a6a1abd7299321b75aba796c51c6f8"
   license "Apache-2.0"
 
   livecheck do
