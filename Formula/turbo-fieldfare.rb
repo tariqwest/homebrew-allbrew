@@ -15,15 +15,10 @@ class TurboFieldfare < Formula
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release"
-    bin.install ".build/release/turbo-fieldfare"
-  end
-
-  service do
-    run ["-", "[Local", "OpenAI-compatible", "server](docs/OPENAI_SERVER.md)"]
-    keep_alive true
+    bin.install ".build/release/TurboFieldfareCLI", ".build/release/TurboFieldfareRepack", ".build/release/TurboFieldfareMac", ".build/release/TurboFieldfareDecodeService", ".build/release/TurboFieldfareServer"
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/turbo-fieldfare --version")
+    assert_match version.to_s, shell_output("#{bin}/TurboFieldfareCLI --version")
   end
 end
