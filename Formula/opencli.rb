@@ -1,5 +1,5 @@
 class Opencli < Formula
-  desc "Make Any Website into CLI & Use your logged-in browser by AI agent. "
+  desc "Make any website into a CLI; use your logged-in browser by AI agent"
   homepage "https://github.com/jackwener/opencli\#readme"
   url "https://registry.npmjs.org/@jackwener/opencli/-/opencli-1.8.6.tgz"
   sha256 "d271cf3ebab40dfd85c77d328592c8c34d6df20ff2aee9b641f984740d3c6670"
