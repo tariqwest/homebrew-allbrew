@@ -29,8 +29,7 @@ class AtomicAgent < Formula
 
   def install
     libexec.install Dir["*"]
-    bin.install_symlink libexec/"darwin-arm64/node_modules/playwright-core/bin/reinstall_msedge_dev_win.ps1" => "atomic-agent"
-    bin.install_symlink libexec/"darwin-arm64/node_modules/playwright-core/bin/reinstall_msedge_dev_win.ps1" => "reinstall_msedge_dev_win.ps1"
+    bin.install_symlink libexec/"atomic-agent" => "atomic-agent"
   end
 
   test do
