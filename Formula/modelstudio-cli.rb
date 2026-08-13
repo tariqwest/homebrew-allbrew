@@ -31,6 +31,20 @@ class ModelstudioCli < Formula
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bl-1.14.3-darwin-arm64" => "bl"
     bin.install_symlink libexec/"bl-1.14.3-darwin-arm64" => "bl-1.14.3-darwin-arm64"
+    return unless OS.mac?
+
+    mach_o = Utils.safe_popen_read(
+      "/usr/bin/find", libexec.to_s, bin.to_s, "-type", "f", "-perm", "+111", "-print0"
+    ).split("\0").reject(&:empty?).select do |path|
+      Utils.safe_popen_read("/usr/bin/file", "-b", path).include?("Mach-O")
+    rescue
+      false
+    end
+
+    mach_o.each do |path|
+      system "/usr/bin/xattr", "-cr", path
+      system "/usr/bin/codesign", "--force", "--sign", "-", path
+    end
   end
 
   test do
