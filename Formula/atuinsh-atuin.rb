@@ -6,8 +6,8 @@ class AtuinshAtuin < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/atuinsh/atuin/releases/download/v#{version}/atuin-server-aarch64-apple-darwin.tar.gz"
-      sha256 "44a5974b87c35dc9f7c254541a7e8a307e35fbd25597aabe0bfd3887332b313c"
+      url "https://github.com/atuinsh/atuin/releases/download/v#{version}/atuin-aarch64-apple-darwin.tar.gz"
+      sha256 "40c8eb1fc12c0f5174fd4f20bc791310f19e58a31791f20d14d72f15661f19f1"
     end
     on_intel do
       url "https://github.com/atuinsh/atuin/releases/download/v#{version}/atuin-x86_64-apple-darwin.tar.gz"
@@ -17,12 +17,12 @@ class AtuinshAtuin < Formula
 
   on_linux do
     on_arm do
-      url "https://github.com/atuinsh/atuin/releases/download/v#{version}/atuin-server-aarch64-unknown-linux-musl.tar.gz"
-      sha256 "77be07949b97f30e450cf0c81789a5f7cf2554fdb96a917ff122a9a93ffa5d1c"
+      url "https://github.com/atuinsh/atuin/releases/download/v#{version}/atuin-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "61bf95ee819d1b1ed8f2cea2333c7ca26289f4f0755df24f9ac209f2ba5d0014"
     end
     on_intel do
-      url "https://github.com/atuinsh/atuin/releases/download/v#{version}/atuin-x86_64-unknown-linux-musl.tar.gz"
-      sha256 "a2cd1f7bba0e45cf620683833a6414b9dd74a0c446e4d819258b6717109bc0fd"
+      url "https://github.com/atuinsh/atuin/releases/download/v#{version}/atuin-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "4d7559ada42407ee8ddc62349acf134dd297568d032c45a746a7aef8a6860648"
     end
   end
 
@@ -33,8 +33,7 @@ class AtuinshAtuin < Formula
 
   def install
     libexec.install Dir["*"]
-    bin.install_symlink libexec/"atuin-server" => "atuin"
-    bin.install_symlink libexec/"atuin-server" => "atuin-server"
+    bin.install_symlink libexec/"atuin" => "atuin"
     return unless OS.mac?
 
     mach_o = Utils.safe_popen_read(
