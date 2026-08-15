@@ -37,7 +37,7 @@ class Devbox < Formula
     content = File.read(script)
     # Rewrite hard-coded INSTALL_DIR/BIN_DIR assignments to the formula bin while
     # preserving an optional leading "readonly" keyword and the surrounding spacing.
-    content.gsub!(%r{(readonly\s+)?(INSTALL_DIR|BIN_DIR|install_dir|BINDIR)(\s*=\s*)["']?[^"'$\s]+["']?}, "\\1\\2\\3'#{bin}'")
+    content.gsub!(%r{(readonly\s+)?(INSTALL_DIR|BIN_DIR|install_dir|BINDIR)(\s*=\s*)["']?[^"'$\s]+["']?}, "\\1\\2\\3'#{buildpath/"bin"}'")
     # Strip common sudo install patterns that break inside the Homebrew sandbox.
     content.gsub!(%r{\$\(command -v sudo \|\| true\)\s*}, "")
     content.gsub!(%r{\bsudo\s+(?:bash|sh|cp|mv|mkdir|tar|unzip|install|tee)\b}, "")
@@ -60,7 +60,6 @@ class Devbox < Formula
       buildpath/"bin",
       buildpath/".local/bin",
       buildpath/"usr/local/bin",
-      Pathname.new(ENV.fetch("PREFIX"))/"bin",
     ].uniq
     # Add any dot-prefixed tool home bin/ directories the installer created (e.g. ~/.volta/bin).
     Dir.glob(File.join(buildpath, ".*", "bin")).each do |d|
