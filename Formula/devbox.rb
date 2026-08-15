@@ -27,8 +27,6 @@ class Devbox < Formula
     ENV["WARP_TUI_INSTALL_DIR"] = (buildpath/"warp-tui").to_s
     ENV["WARP_TUI_BIN_DIR"] = (buildpath/"bin").to_s
     ENV["FORCE"] = "1"
-    ENV["QUIET"] = "1"
-    ENV["SILENT"] = "1"
     ENV["INSTALL_DIR"] = (buildpath/"bin").to_s
     system "mkdir", "-p", ENV.fetch("BIN_DIR")
     # Vendor the script so we can rewrite hard-coded install paths and strip sudo.
@@ -45,7 +43,7 @@ class Devbox < Formula
     content.gsub!(%r{\bsudo\s+(?:bash|sh|cp|mv|mkdir|tar|unzip|install|tee)\b}, "")
     File.write(script, content)
 
-    system "bash", script.to_s, "--force", "--quiet", "--silent"
+    system "bash", script.to_s, "--force"
 
     # Warp Agent CLI uses a versioned layout: $WARP_TUI_INSTALL_DIR/warp-tui/versions/<version>/warp-tui-stable
     # with a symlink $WARP_TUI_BIN_DIR/warp -> .../current/warp-tui-stable. The symlink target
