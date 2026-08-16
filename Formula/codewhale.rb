@@ -38,8 +38,11 @@ class Codewhale < Formula
     bin.install bin_path => "codewhale"
     return unless OS.mac?
 
+    search_paths = [libexec.to_s, bin.to_s].select { |d| File.directory?(d) }
+    return if search_paths.empty?
+
     mach_o = Utils.safe_popen_read(
-      "/usr/bin/find", libexec.to_s, bin.to_s, "-type", "f", "-perm", "+111", "-print0"
+      "/usr/bin/find", *search_paths, "-type", "f", "-perm", "+111", "-print0"
     ).split("\0").reject(&:empty?).select do |path|
       Utils.safe_popen_read("/usr/bin/file", "-b", path).include?("Mach-O")
     rescue
