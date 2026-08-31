@@ -55,6 +55,11 @@ class Hister < Formula
     end
   end
 
+  service do
+    run [opt_bin/"hister", "listen"]
+    keep_alive true
+  end
+
   test do
     assert_match version.to_s, shell_output("#{bin}/hister --version")
   end
