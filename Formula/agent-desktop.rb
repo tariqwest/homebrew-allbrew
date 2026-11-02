@@ -6,23 +6,23 @@ class AgentDesktop < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-ffi-v#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "495a76b557650af4191d3d23bdf1313489bd42eb622c52b7bf0c1ea6de7e69b4"
+      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-v#{version}-aarch64-apple-darwin.tar.gz"
+      sha256 "7bee385196d7b478de80cf05ca4304aaa38f0eba593b3406ad3c247c1773be19"
     end
     on_intel do
-      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-ffi-v#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "182c984d03d919580a554f3d449adf21ae8a473bdee511cb70729b8c03a8cfb0"
+      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-v#{version}-x86_64-apple-darwin.tar.gz"
+      sha256 "8edda6df17eafc042395502a823dbb8415bc8ac14835a6731e4d8becc9cb4121"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-ffi-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "236273ae211ca8d5c77a597b44ff1460856d8e4cd1300776859952476bb76332"
+      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "864cb782e0afc8bf0df19622016b24bdbd1a83fc7749f784ee82aa49a7f845eb"
     end
     on_intel do
-      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-ffi-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "d4f57bb0a8e86c96b2e3dff96c2875d56cb737dc2dccc177784cf520eefa6310"
+      url "https://github.com/vercel-labs/agent-desktop/releases/download/v#{version}/agent-desktop-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "ad661b7a3fd8f990a769243f4889a240ca0e2c8dab3ef5bddd6019086c71e0b4"
     end
   end
 
@@ -33,8 +33,7 @@ class AgentDesktop < Formula
 
   def install
     libexec.install Dir["*"]
-    bin.install_symlink libexec/"SHA256SUMS" => "agent-desktop"
-    bin.install_symlink libexec/"SHA256SUMS" => "SHA256SUMS"
+    bin.install_symlink libexec/"agent-desktop" => "agent-desktop"
     return unless OS.mac?
 
     search_paths = [libexec.to_s, bin.to_s].select { |d| File.directory?(d) }
