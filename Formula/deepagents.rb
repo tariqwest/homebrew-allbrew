@@ -1,97 +1,23 @@
 class Deepagents < Formula
-  desc "The batteries-included agent harness."
-  homepage "https://langch.in/dcode"
-  url "https://langch.in/dcode"
-  version "deepagents==0.7.38"
-  sha256 "62ae2dc0b65bf5e3141a0a7a0676a6cd80fdcbd9893b3e279f90a99a72b1d019"
+  desc "The batteries included agent harness."
+  homepage "https://github.com/langchain-ai/deepagentsjs\#readme"
+  url "https://registry.npmjs.org/deepagents/-/deepagents-1.16.5.tgz"
+  sha256 "1e4582ac29bf095dc1dab4c552e6be16a534c246b09f5fb38e7985e10d7af3dc"
+  license "MIT"
 
   livecheck do
-    url "https://langch.in/dcode"
-    strategy :header_match
-    regex(/(\d+(?:\.\d+)+)/)
+    url "https://registry.npmjs.org/deepagents/latest"
+    regex(/"version"\s*:\s*"v?([^"\\]+)"/i)
   end
 
+  depends_on "node"
+
   def install
-    ENV["PREFIX"] = prefix.to_s
-    ENV["DESTDIR"] = prefix.to_s
-    # Many vendor installers honor PREFIX/DESTDIR; others ignore them and write under $HOME
-    # (commonly ~/.local/bin or ~/.<tool>/bin). Sandbox HOME so those paths stay inside buildpath.
-    ENV["HOME"] = buildpath.to_s
-    # Common generic override accepted by some installers.
-    ENV["BIN_DIR"] = (buildpath/"bin").to_s
-    ENV["INSTALL_DIR"] = (buildpath/"bin").to_s
-    # Skip shell profile edits inside the sandbox; app-specific *_NO_MODIFY_PATH may override.
-    ENV["NO_MODIFY_PATH"] = "1"
-    # Warp Agent CLI honors WARP_TUI_* (defaults to $HOME/.warp and $HOME/.local/bin);
-    # point them inside buildpath so the versioned layout is discoverable.
-    ENV["WARP_TUI_INSTALL_DIR"] = (buildpath/"warp-tui").to_s
-    ENV["WARP_TUI_BIN_DIR"] = (buildpath/"bin").to_s
-    ENV["FORCE"] = "1"
-    ENV["CI"] = "1"
-    ENV["DEEPAGENTS_HOME"] = (buildpath/".deepagents").to_s
-    ENV["DEEPAGENTS_CODE_NO_MODIFY_PATH"] = "1"
-    ENV["INSTALL_LOCK_DIR"] = libexec.to_s
-    ENV["LEGACY_INSTALL_LOCK_DIR"] = libexec.to_s
-    ENV["INSTALL_LOCK_RECLAIM_DIR"] = libexec.to_s
-    ENV["UV_TOOL_DIR"] = libexec.to_s
-    ENV["XDG_CACHE_HOME"] = (buildpath/".deepagents").to_s
-    ENV["XDG_DATA_HOME"] = (buildpath/".deepagents").to_s
-    ENV["XDG_BIN_HOME"] = (buildpath/".deepagents").to_s
-    ENV["TOOL_BIN_DIR"] = (buildpath/"bin").to_s
-    ENV["MANAGED_BIN_DIR"] = (buildpath/"bin").to_s
-    ENV["XDG_CONFIG_HOME"] = (buildpath/".config").to_s
-    ENV["NO_MODIFY_PATH"] = "1"
-    system "mkdir", "-p", ENV.fetch("BIN_DIR")
-    system "bash", cached_download.to_s
-
-    # Warp Agent CLI uses a versioned layout: $WARP_TUI_INSTALL_DIR/warp-tui/versions/<version>/warp-tui-stable
-    # with a symlink $WARP_TUI_BIN_DIR/warp -> .../current/warp-tui-stable. The symlink target
-    # is under buildpath and would be broken after install, so install the real binary directly.
-    warp_bin = Dir[buildpath/"warp-tui"/"versions"/"*"/"warp-tui-*"].select { |f| File.file?(f) && File.executable?(f) }.first
-    if warp_bin
-      bin.install warp_bin => "warp"
-      # Also ensure the versioned layout's resources are available if needed (optional)
-      # The installer already staged everything under warp-tui/ — Homebrew only needs the binary.
-      return
-    end
-
-    candidates = [
-      buildpath/"bin",
-      buildpath/".local/bin",
-      buildpath/"usr/local/bin",
-    ].uniq
-    # Add any dot-prefixed tool home bin/ directories the installer created (e.g. ~/.volta/bin).
-    Dir.glob(File.join(buildpath, ".*", "bin")).each do |d|
-      base = File.basename(File.dirname(d))
-      next if base == "." || base == ".."
-      candidates << Pathname.new(d)
-    end
-    candidates.uniq!
-    installed = false
-    candidates.each do |dir|
-      next unless dir.directory?
-      bins = Dir[dir/"*"].select { |f| File.file?(f) && File.executable?(f) }
-      next if bins.empty?
-      # If the only bin is a broken symlink (warp -> warp-tui/...), resolve to the real binary.
-      # Homebrew's bin.install would copy the symlink as-is, leaving a broken link.
-      # For warp, the real binary is already handled above; for others, install as-is.
-      bin.install bins
-      installed = true
-      break
-    end
-    unless installed
-      # FNM_DOTMATCH so files under ~/.<tool>/... are found (Dir.glob skips dotdirs by default).
-      bins = Dir.glob(File.join(buildpath, "**", "*"), File::FNM_DOTMATCH).select do |f|
-        base = File.basename(f)
-        next false if base == "." || base == ".."
-        File.file?(f) && File.executable?(f) && !base.start_with?(".")
-      end
-      odie "install script produced no executable binaries under buildpath" if bins.empty?
-      bin.install bins
-    end
+    system "npm", "install", *std_npm_args, "--min-release-age=0"
+    bin.install_symlink libexec.glob("bin/*").select { |f| f.file? || f.symlink? }
     return unless OS.mac?
 
-    search_paths = [libexec.to_s, bin.to_s].select { |d| File.directory?(d) }
+    search_paths = [libexec.to_s].select { |d| File.directory?(d) }
     return if search_paths.empty?
 
     mach_o = Utils.safe_popen_read(
