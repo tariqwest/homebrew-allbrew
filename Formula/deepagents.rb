@@ -39,7 +39,7 @@ class Deepagents < Formula
     ENV["XDG_BIN_HOME"] = (buildpath/".deepagents").to_s
     ENV["TOOL_BIN_DIR"] = (buildpath/"bin").to_s
     ENV["MANAGED_BIN_DIR"] = (buildpath/"bin").to_s
-    ENV["XDG_CONFIG_HOME"] = (buildpath/".deepagents").to_s
+    ENV["XDG_CONFIG_HOME"] = (buildpath/".config").to_s
     ENV["NO_MODIFY_PATH"] = "1"
     system "mkdir", "-p", ENV.fetch("BIN_DIR")
     system "bash", cached_download.to_s
